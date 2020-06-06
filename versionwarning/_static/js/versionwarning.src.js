@@ -56,17 +56,15 @@ function checkVersion(config) {
     };
 
     $.ajax({
-        url: config.meta.api_url + "version/",
+        url: config.meta.api_url + "_static/documentation_options.js",
         // Used when working locally for development
         // crossDomain: true,
         // xhrFields: {
         //     withCredentials: true,
         // },
         // dataType: "jsonp",
-        data: get_data,
         success: function (versions) {
-            // TODO: fetch more versions if there are more pages (next)
-            highest_version = getHighestVersion(versions["results"]);
+            highest_version={ "slug": versions.match(/.*VERSION.*'(.*)'/)[1] };
             if (
                 semver.valid(semver.coerce(running_version.slug)) && semver.valid(semver.coerce(highest_version.slug)) &&
                 semver.lt(semver.coerce(running_version.slug), semver.coerce(highest_version.slug))) {
